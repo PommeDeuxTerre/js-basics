@@ -41,6 +41,9 @@ body {
 .square-snake {
     background-color: rgb(0, 61, 0);
 }
+.square-snake-head {
+    background-color: rgb(0, 145, 212);
+}
 .square-apple {
     background-color: red;
 }

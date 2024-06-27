@@ -8,9 +8,11 @@ const LEFT = 0;
 const UP = 1;
 const RIGHT = 2;
 const DOWN = 3;
+
 const EMPTY = 0;
-const SNAKE = 1;
-const APPLE = 2;
+const APPLE = 1;
+const SNAKE = 2;
+const SNAKE_HEAD = 3;
 
 class Game{
     snake;
@@ -45,6 +47,9 @@ class Game{
                 break;
             case SNAKE:
                 html_square.className = "square-snake";
+                break;
+            case SNAKE_HEAD:
+                html_square.className = "square-snake-head";
                 break;
             case EMPTY:
                 html_square.className = "";

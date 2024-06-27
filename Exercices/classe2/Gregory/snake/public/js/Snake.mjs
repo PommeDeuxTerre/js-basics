@@ -1,12 +1,15 @@
 const STARTING_X = 5;
 const STARTING_Y = 4;
+
 const LEFT = 0;
 const UP = 1;
 const RIGHT = 2;
 const DOWN = 3;
+
 const EMPTY = 0;
-const SNAKE = 1;
-const APPLE = 2;
+const APPLE = 1;
+const SNAKE = 2;
+const SNAKE_HEAD = 3;
 
 class Snake{
     direction;
@@ -40,6 +43,7 @@ class Snake{
         for (const square of this.snake){
             this.grid[square.y][square.x] = SNAKE;
         }
+        this.grid[this.snake[0].y][this.snake[0].x] = SNAKE_HEAD;
     }
     setDirection(direction){
         if (direction < 0 || direction > 3 || direction == (direction + 2) % 4){
@@ -71,7 +75,7 @@ class Snake{
         if (square.x < 0 || square.x > this.width || square.y < 0 || square.y > this.height){
             return false;
         }
-        if (this.grid[square.y][square.x] == SNAKE){
+        if (this.grid[square.y][square.x] == SNAKE || this.grid[square.y][square.x] == SNAKE_HEAD){
             return false;
         }
         return true;
@@ -99,7 +103,8 @@ class Snake{
         const is_eating_apple = this.grid[new_head.y][new_head.x]==APPLE;
 
         //update snake
-        this.grid[new_head.y][new_head.x] = SNAKE;
+        this.grid[new_head.y][new_head.x] = SNAKE_HEAD;
+        this.grid[this.snake[0].y][this.snake[0].x] = SNAKE;
         this.snake.unshift(new_head);
 
         if (is_eating_apple){
@@ -112,7 +117,6 @@ class Snake{
     die(){
         this.alive = false;
         document.getElementById("losing-popup").style.display = "flex";
-        console.log("you're dead");
     }
 }
 export { Snake };
