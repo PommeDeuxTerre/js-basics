@@ -120,14 +120,14 @@ class Snake{
             this.snake.pop();
         }
     }
-    getScore(){
+    getScore(speed){
         let score = 0;
         for (const row of this.grid){
             for (const square of row){
                 if (square == SNAKE)score++;
             }
         }
-        return score + 1;
+        return (score + 1) * speed / 10;
     }
     die(){
         this.alive = false;

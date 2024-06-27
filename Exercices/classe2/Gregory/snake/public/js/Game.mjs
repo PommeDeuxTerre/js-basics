@@ -17,14 +17,24 @@ const SNAKE_HEAD = 3;
 class Game{
     snake;
     last_direction;
-    is_paused
+    is_paused;
+    speed;
     constructor(){
         this.initSnakeGrid();
         this.initSnakeGame();
         this.updateGuiGrid();
         this.is_paused = false;
+        this.speed = this.getSpeed();
     }
 
+    getSpeed(){
+        try {
+            const found = document.location.search.match(/[\?\&]speed=(\d+)/);
+            return Number(found[1]);
+        }catch (error){
+            location.href = "./?speed=100";
+        }
+    }
     initSnakeGrid(){
         const snake_div = document.querySelector("#snake");
         for (let y=0;y<HEIGHT;y++){
@@ -83,27 +93,32 @@ class Game{
         this.snake.move();
         this.updateGuiGrid();
         for (const element of document.querySelectorAll(".current-score")){
-            element.textContent = `Score: ${this.snake.getScore()}`;
+            element.textContent = `Score: ${this.snake.getScore(this.speed)}`;
         }
     }
     launchGame(){
         this.snake.generateNewApple();
-        let interval_id = setInterval(()=>this.gameBoucle(interval_id), 200);
+        let interval_id = setInterval(()=>this.gameBoucle(interval_id), this.speed);
         this.updateBestScore();
 
         document.body.addEventListener("keydown", (event)=>{
+            if (event.key == " " && !this.snake.alive)location.reload();
             switch (event.key){
+                case "d":
                 case "ArrowRight":
-                    if (this.last_direction !== LEFT)this.snake.direction = RIGHT;
+                    if (this.last_direction !== LEFT && !this.is_paused)this.snake.direction = RIGHT;
                     break;
+                case "q":
                 case "ArrowLeft":
-                    if (this.last_direction !== RIGHT)this.snake.direction = LEFT;
+                    if (this.last_direction !== RIGHT && !this.is_paused)this.snake.direction = LEFT;
                     break;
+                case "z":
                 case "ArrowUp":
-                    if (this.last_direction !== DOWN)this.snake.direction = UP;
+                    if (this.last_direction !== DOWN && !this.is_paused)this.snake.direction = UP;
                     break;
+                case "s":
                 case "ArrowDown":
-                    if (this.last_direction !== UP)this.snake.direction = DOWN;
+                    if (this.last_direction !== UP && !this.is_paused)this.snake.direction = DOWN;
                     break;
                 case " ":
                     if (!this.snake.alive)break;
@@ -123,7 +138,7 @@ class Game{
     addNewScore(score){
         let scores = sessionStorage.getItem("snake_scores");
         if (!scores){
-            sessionStorage.setItem("snake_scores", JSON.stringify([{"score": this.snake.getScore()}]));
+            sessionStorage.setItem("snake_scores", JSON.stringify([{"score": this.snake.getScore(this.speed)}]));
         }else {
             scores = JSON.parse(scores)
             scores.push({"score": score});
@@ -134,7 +149,7 @@ class Game{
     die(){
         const popup = document.getElementById(this.snake.has_won ? "winning-popup" : "losing-popup");
         popup.style.display = "flex";
-        this.addNewScore(this.snake.getScore());
+        this.addNewScore(this.snake.getScore(this.speed));
         this.updateBestScore();
     }
 }
