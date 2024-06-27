@@ -72,7 +72,7 @@ class Snake{
     }
     isValidSquare(square){
         //touch border
-        if (square.x < 0 || square.x > this.width || square.y < 0 || square.y > this.height){
+        if (square.x < 0 || square.x >= this.width || square.y < 0 || square.y >= this.height){
             return false;
         }
         if (this.grid[square.y][square.x] == SNAKE || this.grid[square.y][square.x] == SNAKE_HEAD){
