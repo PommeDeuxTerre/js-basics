@@ -75,6 +75,7 @@ class Game{
             if (this.snake.alive == false){
                 clearInterval(interval_id);
                 this.die();
+                return;
             }
             this.last_direction = this.snake.direction;
             this.snake.move();
