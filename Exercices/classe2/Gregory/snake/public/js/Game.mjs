@@ -138,10 +138,10 @@ class Game{
     addNewScore(score){
         let scores = sessionStorage.getItem("snake_scores");
         if (!scores){
-            sessionStorage.setItem("snake_scores", JSON.stringify([{"score": this.snake.getScore(this.speed)}]));
+            sessionStorage.setItem("snake_scores", JSON.stringify([{"score": score, "speed": this.speed}]));
         }else {
             scores = JSON.parse(scores)
-            scores.push({"score": score});
+            scores.push({"score": score, "speed": this.speed});
             sessionStorage.setItem("snake_scores", JSON.stringify(scores));
         }
         console.log(scores);

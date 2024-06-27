@@ -127,7 +127,14 @@ class Snake{
                 if (square == SNAKE)score++;
             }
         }
-        return (score + 1) * speed / 10;
+        let speed_mult;
+        if (speed >= 200)speed_mult = 1;
+        else if (speed >= 150)speed_mult = 2;
+        else if (speed >= 100)speed_mult = 4;
+        else if (speed >= 50)speed_mult = 8;
+        else speed_mult = 16;
+
+        return (score - 1) * speed_mult;
     }
     die(){
         this.alive = false;
