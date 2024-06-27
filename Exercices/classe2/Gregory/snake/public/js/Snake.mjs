@@ -18,11 +18,13 @@ class Snake{
     width;
     height;
     alive;
+    has_won;
     constructor(width, height){
         this.width = width;
         this.height = height;
         this.direction = LEFT;
         this.alive = true;
+        this.has_won = false;
         //index 0 -> head
         this.snake = [
             {"x": STARTING_X, "y": STARTING_Y},
@@ -118,13 +120,21 @@ class Snake{
             this.snake.pop();
         }
     }
+    getScore(){
+        let score = 0;
+        for (const row of this.grid){
+            for (const square of row){
+                if (square == SNAKE)score++;
+            }
+        }
+        return score + 1;
+    }
     die(){
         this.alive = false;
-        document.getElementById("losing-popup").style.display = "flex";
     }
     won(){
         this.alive = false;
-        document.getElementById("winning-popup").style.display = "flex";
+        this.has_won = true;
     }
 }
 export { Snake };

@@ -100,6 +100,9 @@ class Game{
         });
     }
     die(){
+        const popup = document.getElementById(this.snake.has_won ? "winning-popup" : "losing-popup");
+        popup.style.display = "flex";
+        popup.querySelector("p").textContent = `Score: ${this.snake.getScore()}`;
     }
 }
 
