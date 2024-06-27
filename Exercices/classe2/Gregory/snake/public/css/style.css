@@ -1,0 +1,27 @@
+body {
+    background-color: green;
+}
+#snake {
+    margin-top: 12.5vh;
+    margin-left: calc((100vw - 75vh) / 2);
+    height: 75vh;
+    width: 75vh;
+    background-color: greenyellow;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 10px 15px rgb(0, 61, 0);
+}
+.snake-row {
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+}
+.snake-square {
+    width: 10%;
+}
+.square-snake {
+    background-color: rgb(0, 61, 0);
+}
+.square-apple {
+    background-color: red;
+}
