@@ -90,6 +90,10 @@ class Snake{
                 }
             }
         }
+        if (coords.length == 0){
+            this.won();
+            return;
+        }
         const new_apple = coords[Math.floor(Math.random()*coords.length)];
         this.grid[new_apple.y][new_apple.x] = APPLE;
     }
@@ -117,6 +121,10 @@ class Snake{
     die(){
         this.alive = false;
         document.getElementById("losing-popup").style.display = "flex";
+    }
+    won(){
+        this.alive = false;
+        document.getElementById("winning-popup").style.display = "flex";
     }
 }
 export { Snake };
