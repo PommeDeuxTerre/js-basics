@@ -17,10 +17,12 @@ const SNAKE_HEAD = 3;
 class Game{
     snake;
     last_direction;
+    is_paused
     constructor(){
         this.initSnakeGrid();
         this.initSnakeGame();
         this.updateGuiGrid();
+        this.is_paused = false;
     }
 
     initSnakeGrid(){
@@ -69,21 +71,24 @@ class Game{
         this.snake = new Snake(WIDTH, HEIGHT);
     }
 
+    gameBoucle(interval_id){
+        if (this.is_paused)return;
+
+        if (this.snake.alive == false){
+            clearInterval(interval_id);
+            this.die();
+            return;
+        }
+        this.last_direction = this.snake.direction;
+        this.snake.move();
+        this.updateGuiGrid();
+        for (const element of document.querySelectorAll(".current-score")){
+            element.textContent = `Score: ${this.snake.getScore()}`;
+        }
+    }
     launchGame(){
         this.snake.generateNewApple();
-        let interval_id = setInterval(()=>{
-            if (this.snake.alive == false){
-                clearInterval(interval_id);
-                this.die();
-                return;
-            }
-            this.last_direction = this.snake.direction;
-            this.snake.move();
-            this.updateGuiGrid();
-            for (const element of document.querySelectorAll(".current-score")){
-                element.textContent = `Score: ${this.snake.getScore()}`;
-            }
-        }, 200);
+        let interval_id = setInterval(()=>this.gameBoucle(interval_id), 200);
 
         document.body.addEventListener("keydown", (event)=>{
             switch (event.key){
@@ -99,6 +104,8 @@ class Game{
                 case "ArrowDown":
                     if (this.last_direction !== UP)this.snake.direction = DOWN;
                     break;
+                case " ":
+                    this.is_paused = !this.is_paused;
             }
         });
     }
