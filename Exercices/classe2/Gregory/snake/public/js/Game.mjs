@@ -97,12 +97,13 @@ class Game{
         }
     }
     launchGame(){
+        const restart_keys = [" ", "d", "q", "z", "s", "ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
         this.snake.generateNewApple();
         let interval_id = setInterval(()=>this.gameBoucle(interval_id), this.speed);
         this.updateBestScore();
 
         document.body.addEventListener("keydown", (event)=>{
-            if (event.key == " " && !this.snake.alive)location.reload();
+            if (restart_keys.includes(event.key) && !this.snake.alive)location.reload();
             switch (event.key){
                 case "d":
                 case "ArrowRight":
