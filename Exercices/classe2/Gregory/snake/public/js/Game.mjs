@@ -105,7 +105,10 @@ class Game{
                     if (this.last_direction !== UP)this.snake.direction = DOWN;
                     break;
                 case " ":
+                    if (!this.snake.alive)break;
                     this.is_paused = !this.is_paused;
+                    document.querySelector("#pause-overlay").classList.toggle("hidden");
+                    document.querySelector("#pause-img-overlay").classList.toggle("hidden");
             }
         });
     }
