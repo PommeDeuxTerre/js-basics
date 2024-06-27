@@ -5,8 +5,12 @@ h2 {
     text-align: center;
     font-size: 2em;
     margin-top: 2em;
-    margin-bottom: 2em;
+    margin-bottom: 0;
     color: greenyellow;
+}
+h2.best-score {
+    margin-top: 0;
+    margin-bottom: 2em;
 }
 #snake-game {
     margin-left: calc((100vw - 75vh) / 2);

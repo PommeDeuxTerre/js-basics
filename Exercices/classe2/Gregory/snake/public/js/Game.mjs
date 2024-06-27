@@ -89,6 +89,7 @@ class Game{
     launchGame(){
         this.snake.generateNewApple();
         let interval_id = setInterval(()=>this.gameBoucle(interval_id), 200);
+        this.updateBestScore();
 
         document.body.addEventListener("keydown", (event)=>{
             switch (event.key){
@@ -112,9 +113,29 @@ class Game{
             }
         });
     }
+    updateBestScore(){
+        let scores = JSON.parse(sessionStorage.getItem("snake_scores")) || [];
+        const best_score = scores.sort((a, b)=>b.score-a.score)[0]?.score || 0;
+        for (const element of document.querySelectorAll(".best-score")){
+            element.textContent = `Best Score: ${best_score}`;
+        }
+    }
+    addNewScore(score){
+        let scores = sessionStorage.getItem("snake_scores");
+        if (!scores){
+            sessionStorage.setItem("snake_scores", JSON.stringify([{"score": this.snake.getScore()}]));
+        }else {
+            scores = JSON.parse(scores)
+            scores.push({"score": score});
+            sessionStorage.setItem("snake_scores", JSON.stringify(scores));
+        }
+        console.log(scores);
+    }
     die(){
         const popup = document.getElementById(this.snake.has_won ? "winning-popup" : "losing-popup");
         popup.style.display = "flex";
+        this.addNewScore(this.snake.getScore());
+        this.updateBestScore();
     }
 }
 
