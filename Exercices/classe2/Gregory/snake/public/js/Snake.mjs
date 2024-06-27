@@ -111,6 +111,7 @@ class Snake{
     }
     die(){
         this.alive = false;
+        document.getElementById("losing-popup").style.display = "flex";
         console.log("you're dead");
     }
 }
