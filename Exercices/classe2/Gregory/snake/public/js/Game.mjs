@@ -14,6 +14,7 @@ const APPLE = 2;
 
 class Game{
     snake;
+    last_direction;
     constructor(){
         this.initSnakeGrid();
         this.initSnakeGame();
@@ -66,6 +67,11 @@ class Game{
     launchGame(){
         this.snake.generateNewApple();
         let interval_id = setInterval(()=>{
+            if (this.snake.alive == false){
+                clearInterval(interval_id);
+                this.die();
+            }
+            this.last_direction = this.snake.direction;
             this.snake.move();
             this.updateGuiGrid();
         }, 200);
@@ -73,19 +79,21 @@ class Game{
         document.body.addEventListener("keydown", (event)=>{
             switch (event.key){
                 case "ArrowRight":
-                    this.snake.direction = RIGHT;
+                    if (this.last_direction !== LEFT)this.snake.direction = RIGHT;
                     break;
                 case "ArrowLeft":
-                    this.snake.direction = LEFT;
+                    if (this.last_direction !== RIGHT)this.snake.direction = LEFT;
                     break;
                 case "ArrowUp":
-                    this.snake.direction = UP;
+                    if (this.last_direction !== DOWN)this.snake.direction = UP;
                     break;
                 case "ArrowDown":
-                    this.snake.direction = DOWN;
+                    if (this.last_direction !== UP)this.snake.direction = DOWN;
                     break;
             }
         });
+    }
+    die(){
     }
 }
 

@@ -14,10 +14,12 @@ class Snake{
     grid;
     width;
     height;
+    alive;
     constructor(width, height){
         this.width = width;
         this.height = height;
         this.direction = LEFT;
+        this.alive = true;
         //index 0 -> head
         this.snake = [
             {"x": STARTING_X, "y": STARTING_Y},
@@ -108,6 +110,7 @@ class Snake{
         }
     }
     die(){
+        this.alive = false;
         console.log("you're dead");
     }
 }
