@@ -1,8 +1,14 @@
 body {
     background-color: green;
 }
+h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    color: greenyellow;
+}
 #snake-game {
-    margin-top: 12.5vh;
     margin-left: calc((100vw - 75vh) / 2);
     height: 75vh;
     width: 75vh;

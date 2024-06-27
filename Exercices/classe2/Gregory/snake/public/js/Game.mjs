@@ -80,6 +80,9 @@ class Game{
             this.last_direction = this.snake.direction;
             this.snake.move();
             this.updateGuiGrid();
+            for (const element of document.querySelectorAll(".current-score")){
+                element.textContent = `Score: ${this.snake.getScore()}`;
+            }
         }, 200);
 
         document.body.addEventListener("keydown", (event)=>{
@@ -102,7 +105,6 @@ class Game{
     die(){
         const popup = document.getElementById(this.snake.has_won ? "winning-popup" : "losing-popup");
         popup.style.display = "flex";
-        popup.querySelector("p").textContent = `Score: ${this.snake.getScore()}`;
     }
 }
 
