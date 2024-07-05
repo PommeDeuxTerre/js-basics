@@ -14,17 +14,47 @@ const APPLE = 1;
 const SNAKE = 2;
 const SNAKE_HEAD = 3;
 
+let is_first_game = true;
+
 class Game{
     snake;
     last_direction;
     is_paused;
     speed;
+    boucle_interval;
     constructor(){
+        this.init();
+    }
+    init(){
+        // init grid view
         this.initSnakeGrid();
+        // init snake params
         this.initSnakeGame();
+        // update view
         this.updateGuiGrid();
-        this.is_paused = false;
+
+        // remove popup
+        document.getElementById("winning-popup").style.display = "none";
+        document.getElementById("losing-popup").style.display = "none";
+
+        // set speed
         this.speed = this.getSpeed();
+
+        //set pause
+        this.is_paused = false;;
+
+        // pause direct if first game
+        if (is_first_game){
+            this.is_paused = true;
+            is_first_game = false;
+            document.querySelector("#pause-overlay").classList.remove("hidden");
+            document.querySelector("#pause-img-overlay").classList.remove("hidden");
+        }else {
+            this.snake.generateNewApple();
+            let interval_id = setInterval(()=>this.gameBoucle(interval_id), this.speed);
+            this.boucle_interval = interval_id;
+            this.updateBestScore();
+        }
     }
 
     getSpeed(){
@@ -37,6 +67,7 @@ class Game{
     }
     initSnakeGrid(){
         const snake_div = document.querySelector("#snake");
+        snake_div.innerHTML = "";
         for (let y=0;y<HEIGHT;y++){
             //row
             const snake_line = document.createElement("div");
@@ -100,10 +131,15 @@ class Game{
         const restart_keys = [" ", "d", "q", "z", "s", "ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
         this.snake.generateNewApple();
         let interval_id = setInterval(()=>this.gameBoucle(interval_id), this.speed);
+        this.boucle_interval = interval_id;
         this.updateBestScore();
 
         document.body.addEventListener("keydown", (event)=>{
-            if (restart_keys.includes(event.key) && !this.snake.alive)location.reload();
+            // restart game
+            if (restart_keys.includes(event.key) && !this.snake.alive){
+                this.restart();
+                return;
+            }
             switch (event.key){
                 case "d":
                 case "ArrowRight":
@@ -141,17 +177,20 @@ class Game{
         if (!scores){
             sessionStorage.setItem("snake_scores", JSON.stringify([{"score": score, "speed": this.speed}]));
         }else {
-            scores = JSON.parse(scores)
+            scores = JSON.parse(scores);
             scores.push({"score": score, "speed": this.speed});
             sessionStorage.setItem("snake_scores", JSON.stringify(scores));
         }
-        console.log(scores);
     }
     die(){
         const popup = document.getElementById(this.snake.has_won ? "winning-popup" : "losing-popup");
         popup.style.display = "flex";
         this.addNewScore(this.snake.getScore(this.speed));
         this.updateBestScore();
+    }
+    restart(){
+        clearInterval(this.boucle_interval);
+        this.init();
     }
 }
 
