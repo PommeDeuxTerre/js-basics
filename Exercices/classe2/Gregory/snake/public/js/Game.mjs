@@ -60,7 +60,11 @@ class Game{
     getSpeed(){
         try {
             const found = document.location.search.match(/[\?\&]speed=(\d+)/);
-            return Number(found[1]);
+            const speed = Number(found[1]);
+            for (const input of document.querySelectorAll("h3.speed input[type=number]")){
+                input.value = speed;
+            }
+            return speed;
         }catch (error){
             location.href = "./?speed=100";
         }

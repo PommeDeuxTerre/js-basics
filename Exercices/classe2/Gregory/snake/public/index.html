@@ -9,6 +9,13 @@
 <body>
     <h2 class="current-score">Score: 2</h2>
     <h2 class="best-score">Best Score: 0</h2>
+    <h3 class="speed">
+        <form action="" onsubmit="event.preventDefault();location.href = `./?speed=${Number(event.target[0].value)}`;">
+            Speed: 
+            <input type="number">
+            <input type="submit" value="Update Speed">
+        </form>
+    </h3>
     <div id="snake-game">
         <div id="pause-overlay" class="hidden"></div>
         <div id="pause-img-overlay" class="hidden"></div>
